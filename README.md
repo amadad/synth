@@ -1,129 +1,121 @@
-# Synth: Persona Maker & Market Research Simulator
+# TinyTroupe: AI Agent Simulation Environment
 
-A powerful toolkit for conducting market research using synthetic personas. This project leverages AI to simulate diverse consumer responses and analyze market potential across different demographics.
+A real-time simulation environment for AI agents with interactive visualization. This project provides a web interface to observe and control multiple AI agents interacting in various environments.
 
 ## Features
 
-- **Market Research Simulation** (`examples/03-gaz.py`):
-  - Generate synthetic consumer panels
-  - Conduct market surveys
-  - Analyze response distributions
-  - Compare markets across nationalities
-  - Visualize results with matplotlib
+- **Real-time Simulation**:
+  - Start, pause, and step-by-step simulation control
+  - Multiple environment support (House, Office, Park)
+  - Agent state tracking and visualization
+  - Event timeline and story generation
 
-- **Ad Testing** (`examples/06-travel.py`): 
-  - Test ad effectiveness across different personas
-  - Generate diverse consumer profiles
-  - Extract structured feedback
-  - Analyze ad preferences
-  - Track voting patterns
+- **Web Interface**:
+  - Interactive control panel
+  - Real-time state updates
+  - Multiple views (Timeline, Story, Environment)
+  - Agent status monitoring
 
 ## Getting Started
 
-1. Install dependencies using uv:
+1. Install dependencies:
 ```bash
-uv pip install openai python-dotenv pandas matplotlib
+# Backend
+cd backend
+uv pip install -r requirements.txt
+
+# Frontend
+cd frontend
+npm install
 ```
 
-2. Set up your OpenAI API key in `.env`:
-```env
-OPENAI_API_KEY=your_key_here
-OPENAI_API_TYPE=openai  # or 'azure' if using Azure OpenAI
-OPENAI_MODEL=gpt-4  # or your preferred model
-```
-
-3. Run example simulations:
+2. Start the servers:
 ```bash
-python examples/03-gaz.py  # Market research simulation
-python examples/06-travel.py  # Ad testing
+# Backend (in backend directory)
+python run.py
+
+# Frontend (in frontend directory)
+npm run dev
 ```
 
-## Usage Examples
+3. Open http://localhost:3000 in your browser
 
-### Market Research
-```python
-# Create synthetic consumer panel
-factory = TinyPersonFactory(context)
-people = factory.generate_people(100)
+## Usage
 
-# Run market survey
-market = TinyWorld("Target audience", people)
-market.broadcast(survey_question)
-market.run(1)
+1. **Select Environment**:
+   - Choose from available environments (House, Office, Park)
+   - Each environment has unique objects and interaction possibilities
 
-# Analyze results
-results = ResultsExtractor().extract_results_from_agents(people)
-```
+2. **Control Simulation**:
+   - Start/Pause: Control simulation flow
+   - Step: Advance simulation by specified steps
+   - Monitor events in Timeline view
 
-### Ad Testing
-```python
-# Generate diverse consumer profiles
-factory = TinyPersonFactory(target_audience_context)
-people = factory.generate_people(100)
-
-# Test ads
-for person in people:
-    person.listen_and_act(ad_evaluation_request)
-
-# Extract preferences
-results = ResultsExtractor().extract_results_from_agents(people)
-```
+3. **Monitor Agents**:
+   - View agent locations and status
+   - Track interactions between agents
+   - Follow generated story narrative
 
 ## Project Structure
 
-- `examples/` - Example simulations and use cases
-  - `03-gaz.py` - Market research simulation example
-  - `06-travel.py` - Ad testing example
-- `tinytroupe/` - Core library components
-  - `agent.py` - Persona simulation
-  - `environment.py` - Simulation environment
-  - `factory.py` - Persona generation
-  - `extraction.py` - Result analysis
-  - `validation.py` - Input validation
-  - `prompts/` - Template files for AI interactions
+- `frontend/` - Next.js web interface
+  - `app/` - Next.js app router components
+  - `components/` - React components
+  - `lib/` - Utility functions and API client
 
-## Output Formats
+- `backend/` - FastAPI server
+  - `app/` - FastAPI application
+    - `main.py` - Server endpoints
+    - `models.py` - Data models
+  - `requirements.txt` - Python dependencies
 
-### Market Research Results
-```json
-{
-    "response": "Yes/No/Maybe",
-    "justification": "Detailed reasoning...",
-    "demographics": {
-        "nationality": "...",
-        "age": "...",
-        "interests": [...]
-    }
-}
+## Views
+
+### Timeline View
+- Chronological list of events
+- Agent actions and interactions
+- System events and state changes
+
+### Story View
+- Narrative description of simulation
+- Agent interactions in natural language
+- Environmental context and atmosphere
+
+### Environment View
+- Current simulation state
+- Agent locations and status
+- Object locations and properties
+
+## Technical Details
+
+- **Frontend**: Next.js, TypeScript, Tailwind CSS
+- **Backend**: FastAPI, Python
+- **Communication**: REST API with real-time polling
+- **State Management**: Server-side simulation state
+
+## Development
+
+1. **Adding New Environments**:
+```python
+# backend/app/main.py
+ENVIRONMENTS = [
+    Environment(id="new_env", name="New Environment"),
+    # Add more environments
+]
 ```
 
-### Ad Testing Results
-```json
-{
-    "ad_id": 1,
-    "ad_title": "...",
-    "justification": "...",
-    "persona_details": {
-        "background": "...",
-        "preferences": "..."
-    }
-}
+2. **Customizing Agents**:
+```python
+# backend/app/main.py
+AGENTS = [
+    Agent(id="1", name="CustomAgent", location="Room", status="Active"),
+    # Add more agents
+]
 ```
-
-## Limitations
-
-- Results are simulations and should be validated with real market research
-- Quality depends on the OpenAI model and prompts used
-- Response times scale with the number of personas
-- Costs scale with API usage
-
-## Disclaimer
-
-This toolkit uses AI to simulate consumer responses. While powerful for early-stage research, it should be used as a complement to, not a replacement for, real consumer feedback. Results should be validated with actual market research.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions welcome! Please feel free to submit a Pull Request.
 
 ## License
 
